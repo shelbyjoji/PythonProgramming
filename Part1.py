@@ -142,53 +142,79 @@ print(d2[all_bp_variables])
 # Q14
 #a frequency table for the BPC variable -  frequncy table for a categorical variable
 pd.crosstab(index=d2["BPC"],columns="Count")
+pd.crosstab(index=d2["SMOKE"],columns="Count")
 
 # Q15
 #Frequncy table for BPC stratified by race
 pd.crosstab(index=d2["BPC"],columns=d2["RACE"])
-
-
-# Q16
-bysmoke = d2.groupby('SMOKE')
-bysmoke.mean()
-bysmoke.std()
+#ABP is for average BP. It does not make any sense to use ABP for frequncy table as it is quantitative
 
 # Q17
-bysmoke = d2.groupby('RACE')
+#Look smoke is categorical
+#find variance of TC for SMOKE variable
+bysmoke = d2.groupby('SMOKE')
 bysmoke.mean()
+bysmoke.std()#to get variance
+K=bysmoke.var()#to get variance
+K[["TC"]]
+
+# Q16
+#FInd mean of TC for RACE variable
+bysmoke = d2.groupby('RACE')
+k= bysmoke.mean()
 bysmoke.std()
+k[["TC"]]
+
 
 # Q18
-import matplotlib.pyplot as plt
-cols=['r','g']
-labels=['NonSmoker','Smoker']
-sizes=[75,1985]
+#In this section, we draw bar chart and pie chart
+import matplotlib.pyplot as plt #import plotting library
+
+cols=['r','g'] #assign colors
+labels=['NonSmoker','Smoker'] #assign labels
+
 
 # table command for frequency table
 pd.crosstab(index=d2["SMOKE"], columns="count")
-explode = [0,0.1]
+sizes=[74,1868] # get this from above freqency table
+explode = [0,0.1] # this will make the piece of pie protrude out; None will keep it within the circle
+#for pie chart
 plt.pie(sizes,explode=explode, labels=labels,colors=cols)
+#for axis and titles
 plt.title("Pie Chart of Race Variable")
 plt.axis('equal')
 
 # bar chart
-x=['NonSmoker','Smoker']
-y=[75,1985]
+x=['NonSmoker','Smoker'] # name categories
+y=sizes
+x
+y
 plt.bar(x,y)
-plt.title("Bar Chart of Race Variable")
+plt.title("Bar Chart of Smoke Variable")
 plt.xlabel("Smoking Status")
 plt.ylabel("Frequency")
 
-# Q19
+# you could do the same for RACE and INCOME
 
+# Q19
+#Frequncy table for RACE stratified by INCOME
 pd.crosstab(index=d2["RACE"], columns=d2["INCOME"])
+
+#Frequncy table for INCOME stratified by RACE
 pd.crosstab(index=d2["INCOME"], columns=d2["RACE"])
 
+
 #stacked bar chart
+#One above other
 import matplotlib.pyplot as plt
+
+#Frequncy table for RACE stratified by INCOME
+pd.crosstab(index=d2["RACE"], columns=d2["INCOME"])
+#From the above frequency table you get A (for RACE 1) and B(for RACE 2)
 A = [14,18,13,80,149,166,167,249,113]
 B = [87,71,57,188,164,143,86,155,22]
-X = range(9)
+X = range(9) # get the range of income
+X
 plt.bar(X, A, color = 'b',label="Race1" )
 plt.bar(X, B, color = 'r', bottom = A, label="Race2")
 
@@ -203,37 +229,42 @@ plt.legend(bbox_to_anchor=(.22,.98), loc=1)
 barWidth = 0.25
 # Set position of bar on X axis
 r1 = np.arange(len(A))
+r1
 r2 = [x + barWidth for x in r1]
+r2
 # Make the plot
 plt.bar(r1, A, color='orange', width=barWidth, edgecolor='white', label='Race1')
 plt.bar(r2, B, color='steelblue', width=barWidth, edgecolor='white', label='Race2')
-# Add xticks on the middle of the group bars
+# Add xticks on the middle of the group bars. Without xticks you would not get bar labels under each bar
 plt.xlabel('Income Status', fontweight='bold')
 plt.xticks([r + barWidth for r in range(len(A))], [1,2,3,4,5,6,7,8,9])
 # Create legend & Show graphic
-plt.legend()
+plt.legend()# you could decide where to place this by looking at previous plotting in previous question
 plt.title("Grouped Bar Chart for Income and Race")
 plt.ylabel("Frequency")
 plt.show()
 
-# dot plot for DBP5. Also draw two separate dot plots for DBP5 when RACE=1 and RA
-#fix labels and titles of 3 by 3 graphs
-#do the stem deaf plot - sbp, dbp
+
 
 
 #------------
 # Q21
 #------------
-x = d2["DBP"]
-plt.plot(x,'bo')
+# dot plot for DBP5.
+x = d2["DBP"] # get all the values of DBP - Quantitative variable
+x
+plt.plot(x,'bo') # bo is for blue circles. You could use go, for green, or maybe something else
 plt.title('Dotplot.DBP')
 
 # subsetting data
+#Here you table DBP by race. Basically you are extracting it into two dataset x1 and x2
 x1=d2[(d2.RACE == 1)]["DBP"]
 x2=d2[(d2.RACE == 2)]["DBP"]
+x1 # look how x1 is
 
+#plotting two seperate graphs
 plt.plot(x1,'bo')
-plt.title('Dotplot.CC')
+plt.title('Dotplot CC')
 plt.grid(True)
 
 plt.plot(x2,'bo')
@@ -245,12 +276,16 @@ plt.show()
 # ------------
 # Q22
 # ------------
+
+# Draw histogram for SBP
 y = d2["SBP"]
 plt.hist(y)
 plt.title("Histogram of SBP")
 plt.xlabel("Values of SBP")
 plt.ylabel("Frequency")
-# two histogram together
+
+# Draw two separate histograms for SBP when RACE=1 and RAce=2
+# two histogram together in one graph
 y1=d2[(d2.RACE == 1)]["SBP"]
 y2=d2[(d2.RACE == 2)]["SBP"]
 plt.hist(y1)
@@ -263,9 +298,12 @@ plt.xlabel("Values of SBP")
 # ------------
 # Q23
 # ------------
+#Draw boxplot for SBP
 plt.boxplot(y)
 plt.title("Boxplot of SBP")
-# two box plot together
+
+# Draw two separate boxplot for SBP when RACE=1 and RAce=2
+# two box plot together. If you run it together, it will be in same graph.
 plt.boxplot(y1)
 plt.title('Box Plot of SBP for african american')
 plt.boxplot(y2)
@@ -274,6 +312,13 @@ plt.title('Box Plot of SBP for caucasian')
 # ----------------------
 # Q24, all 9 graphs
 # ----------------------
+
+#Creating subplots
+# here we are subplotting on 3 by 3 grid
+#331,332,333
+#334, 335, 336
+#337, 338,339
+
 # 1. three dot plot
 
 plt.subplot(331)
@@ -329,13 +374,15 @@ plt.tight_layout()
 import matplotlib.pyplot as plot
 
 # method 1, by selecting random rows
+#create a random of 200 observations
 random_subset = d2.sample(n=50,replace=False)
 
 # stem-leaf plot
 # ------------
 # Q26
 # ------------
-k=round(random_subset.WT)
+k=round(random_subset.SBP)
+k
 y = pd.Series(k)
 plot.stem(y)
 
@@ -345,35 +392,49 @@ fig, axes = stem_graphic(y)
 # ------------
 # Q27
 # ------------
+#subsetting data
+#subset the d1 dataframe by excluding values
 exclude = ["ID","TC", "TG", "HDL", "LDL"]
 keep = [var for var in d1.columns if var not in exclude]
 d3 = d1[keep].copy()
 d3.head()
+print(d1.columns)# we have already removed ID if you ran every line so far. Therefore, only 4 variables are removed
+print(d3.columns)
 
 # ------------
 # Q28
 # ------------
-np.shape(d3)
-d3.isnull().sum()
+#Check the dimension of the new data d3. Report the number of missing values for each variable
+np.shape(d3) #check for diamention
+d3.isnull().sum() # reporting missing values
+# putting it into a column. It will report number of missing values in each row
+#remember axis = 1 for row and 0 for columns
 d3["MISSING"] = d3.isnull().sum(axis=1)
+d3.head()
 
 #------------
 # Q29
 #------------
+#delete any missing values (rows) from d3, and denote this data as d4
 d4=d3.dropna()
+
 #------------
 # Q30
 #------------
+#create  AGE1 variable in D4 data by rounding the AGE variable so that there will not be decimal
 d4['AGE1'] = round(d4['AGE']).astype(int)
+d4.head()
 
 #------------
 # Q31
 #------------
-d5=d4.loc[(d4["AGE1"] >= 9) & (d4['AGE1']<=20)].copy()
+#Subset the data again by keeping age from 9 to 20
+d5= d4.loc[(d4["AGE1"] >= 9) & (d4['AGE1']<=20)].copy()
 
 #------------
 # Q32
 #------------
+#exporting the dataframe d5 as csv format. You will find it in the same folder for python code file
 d5.to_csv("d5_Cleaned_data.csv",index=False)
 
 #------------
@@ -385,15 +446,20 @@ d6.head()
 #------------
 # Q34
 #------------
+# get number of observations by each age category
 print("Observations by Age:")
 print(d6.size())
-print()
+
 print("Total Observations:")
 print(sum(d6.size()))
+
+print("Number of age categories")
 len(d6)
+
+#print group by age category of 11
 d6.get_group(11).head()
 
-##########################################
+####################ERROR***DO**NOT**RUN######################
 def splitframe(data, name='name') :
     n = data[name][0]
     df = pd.DataFrame(columns=data.columns)
@@ -414,24 +480,48 @@ k = splitframe(d5, name="AGE1")
 # ------------------
 # Q35 and Q36
 # ------------------
+# pseudocode
+# Analyze the columns you need and subset the data
+# Drop missing variables and create new data frame. Missing values may interfere with the calculations
+# Again subset the age group required to new dataFrame
+# Now get the rounded value of age into new variable called NewAge
+# Create a new list grouped by NewAge. This will create a dataframe under each list
+# You will find that the length of the list will be same as number of categories
+# Now iterate through each item of list, Within each dataframe, use ss library to find appropritate statistics
+# Bind the list together by concatenate function.
 
-d8=d1[['RACE','INCOME','AGE','SMOKE','SBP','DBP','HT', 'WT','WM','BMI']]
-d9=d8.dropna()
-d11=d9[(d9.AGE > 9) & (d9.AGE <= 19)]
-d11['NewAge']=round(d11.AGE,1)
-ds = [rows for _, rows in d11.groupby('NewAge')]
-d11.groupby("NewAge").mean() # mr. Sami
-len(ds)
 import statistics as ss
-datalist=[]
+datalist=[] # note that this is a list and not a dataframe
+
+
+#subset the data by getting columns you need from original data d1
+d8=d1[['RACE','INCOME','AGE','SMOKE','SBP','DBP','HT', 'WT','WM','BMI']]
+d9=d8.dropna() # remove missing value rows
+d11=d9[(d9.AGE > 9) & (d9.AGE <= 19)] # subset the data by age from 10 to 19
+d11['NewAge']=round(d11.AGE,0)#now you round it
+ds = [rows for _, rows in d11.groupby('NewAge')]
+
+#I just wanted to see my list nicely to analyze the list. You could just use ds, and it will do it.
+from pprint import pprint
+pprint(ds)
+ds[1] # good thing is you could get each dataframe by calling the appropriate number of list
+d11.groupby("NewAge").mean() #by Mr,sami- Question is why the f**k do I need this line -  don't run it!
+
+len(ds)
 for i in range(len(ds)):
-       datalist.append(pd.DataFrame({'age':[ss.mean(ds[i].NewAge)],'Mean.SBP': [ss.mean(ds[i].SBP)],
+       datalist.append(pd.DataFrame({'age':[ss.mean(ds[i].NewAge)],
+      'Mean.SBP': [ss.mean(ds[i].SBP)],
       'Mean.DBP': [ss.mean(ds[i].DBP)],
       'Mean.HT': [ss.mean(ds[i].HT)],
       'Mean.WT': [ss.mean(ds[i].WT)],
       'Mean.BMI': [ss.mean(ds[i].BMI)]}))
+
 pd.concat(datalist)
 
+pprint(datalist)
+datalist[1]
+
+# Great !!! Buhahaaha!!
 
 
 # ------------
