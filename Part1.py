@@ -17,6 +17,7 @@ helloworld(myfirstvariable)
 import pandas as pd
 import numpy as np
 
+#Q1
 # reading csv data
 d1=pd.read_csv('C:/Users/HOMEPCUSER/Desktop/Spring 19/PythonProgramming/PROJECTDATA.csv')
 print(d1)
@@ -25,17 +26,20 @@ print(d1)
 text= pd.read_table('C:/Users/HOMEPCUSER/Desktop/Spring 19/PythonProgramming/ProjectData.txt')
 print(text)
 
+#Q2
 # to get the dimension of dataset
 d1.shape
 np.shape(d1)
 
+#Q3
 # count variables  that are integer and numeric
 d1.info()
 d1.dtypes
 
-# number of variables
+# report number of variables
 print(d1.columns)
 
+#Q4
 # Delete the ID variable from the data set
 del d1['ID']
 del d1['Unnamed: 0']
@@ -46,33 +50,59 @@ d1.head(10)
 # get the tail
 d1.tail(10)
 
+#Q5
 #missing values for each variables -  it reports the null value
 d1.isnull().sum()
 
-#obtain summary statistics
+#Q6
+#obtain summary statistics -  in python describe is for summary statistics
 d1.describe()
+
+#reports summary statistic for specific variable
 d1.describe()[['SBP','DBP']]
 
 #subset the data and then describe
 d3 = d1[['SBP','DBP']]
 d3.describe()
 
-#column for missing values in each row -  axis =2 for column
+#Q7
+#create column for missing values in each row - axis = 0 for column, axis = 1 for rows
 d1["MISSING"] = d1.isnull().sum(axis=1)
 
-#Create a new data D2 by deleting any observation (any row) that has missing value
+#Q8 & #Q9 & #Q10
+#Here we drop rows that has missing value.
+#Create a new data d2 by deleting any observation (any row) that has missing value
 d2=d1.dropna()
-d2.shape
-d2.describe()
+d2.shape # reporting number of rows in new data
+d2.describe() # reporting new summary statistic
 
+#let us check for missing values in d2
+d2.isnull().sum() # none right?
+
+
+#Q11
 #Use the apply function (R code) to report standard deviation for numerical variables only
+#This requires finding all numerical variables
+
+#Look at the actual dataframe and find all categorical variables. You cannot use dtypes to find out categorical
+#We will remove all categorical variable
 irrelevant_variables_list = ["RACE","INCOME","SMOKE","BREAST","WAIST","EVENT"]
+#next line gets the names of all variable that are numerical. All variables - categorical gives numerical.
 relevant_columns = [variable for variable in d2.columns if variable not in irrelevant_variables_list]
+relevant_columns
+#Now you get standard deviation of numerical variable only
 d2[relevant_columns].std()
 
+
 #Q12
+#create ABP (Average Blood Pressure) variable by averaging SBP and DBP for each row of th
 initial_bp_variables = ['SBP', 'DBP']
+#Remember axis =1 gives you rows
+#mean(axis=1) gives average of selected rows
 d2["ABP"] = d2[initial_bp_variables].mean(axis=1)
+d2.tail()
+
+
 d4=d2[["RACE","SBP"]]
 d4.tail()
 d4
@@ -83,8 +113,12 @@ d2[all_quant_bp_variables].head()
 d2.head()
 
 #Q13
+#Creating categorical variable from numerical
+#First, you need to create an upper limit
 abp_limit = d2['ABP'].max()+1
-# Because we will be binning the data using exclusive right ginning functions,
+abp_limit
+
+# Because we will be binning the data using exclusive right binning functions,
 # We make sure that the highest value is still included in the new categorical
 # Label when creating bins
 bpc_ranges = [0,85,100,abp_limit] # The bins will be as follows: [0,85),[85,`100), [100, infinity)
@@ -92,19 +126,27 @@ bpc_ranges = [0,85,100,abp_limit] # The bins will be as follows: [0,85),[85,`100
 bpc_labels = [3,2,1]
 # This function creates categorical variables out of quantitative
 d2['BPC'] = pd.cut(d2['ABP'].values, bins = bpc_ranges, right = False, labels = bpc_labels, include_lowest = False )
+d2.head()
+
+#now we create a display of all new variables we dealt with
 # variables by "binning" them.
 new_bp_variables = ['ABP','BPC']
 # with lists, we can join them together using list1 + list2
+new_bp_variables
+initial_bp_variables
 all_bp_variables = new_bp_variables+initial_bp_variables
 print("Preview of All Blood Pressure Variables:")
 print(d2[all_bp_variables])
 
 
 # Q14
+#a frequency table for the BPC variable -  frequncy table for a categorical variable
 pd.crosstab(index=d2["BPC"],columns="Count")
 
 # Q15
+#Frequncy table for BPC stratified by race
 pd.crosstab(index=d2["BPC"],columns=d2["RACE"])
+
 
 # Q16
 bysmoke = d2.groupby('SMOKE')
