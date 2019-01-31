@@ -372,12 +372,26 @@ k = splitframe(d5, name="AGE1")
 # ------------------
 # Q35 and Q36
 # ------------------
-d8 = d1[['RACE', 'INCOME', 'AGE', 'SMOKE', 'SBP', 'DBP', 'HT', 'WT', 'WM', 'BMI']]
-d9 = d8.dropna()
-d11 = d9[(d9.AGE > 9) & (d9.AGE <= 19)]
-d11['NewAge'] = round(d11.AGE, 1)
-k = d11.groupby("NewAge").mean()
-k
+
+d8=d1[['RACE','INCOME','AGE','SMOKE','SBP','DBP','HT', 'WT','WM','BMI']]
+d9=d8.dropna()
+d11=d9[(d9.AGE > 9) & (d9.AGE <= 19)]
+d11['NewAge']=round(d11.AGE,1)
+ds = [rows for _, rows in d11.groupby('NewAge')]
+d11.groupby("NewAge").mean() # mr. Sami
+len(ds)
+import statistics as ss
+datalist=[]
+for i in range(len(ds)):
+       datalist.append(pd.DataFrame({'age':[ss.mean(ds[i].NewAge)],'Mean.SBP': [ss.mean(ds[i].SBP)],
+      'Mean.DBP': [ss.mean(ds[i].DBP)],
+      'Mean.HT': [ss.mean(ds[i].HT)],
+      'Mean.WT': [ss.mean(ds[i].WT)],
+      'Mean.BMI': [ss.mean(ds[i].BMI)]}))
+pd.concat(datalist)
+
+
+
 
 # ------------
 # Q37, Q38, Q39
