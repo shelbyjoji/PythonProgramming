@@ -555,7 +555,12 @@ D1 = pd.read_csv("PROJECTDATA.csv")
 # you cannot do regular regression - look into mixed regression
 
 # Create NEWID variable from the existing ID variable in the D1 dataframe
-del D1['Unnamed: 0']
+# NEWID variable should only have numeric numbers. We can call this dataframe d8
+
+del D1['Unnamed: 0'] # we do not need this column
+
+# Make a deep copy, including a copy of the data and the indices.
+# With deep=False neither the indices nor the data are copied.
 D8 = D1.copy(deep=True)
 D8['NEW.ID'] = D8['ID'] - 100010
 del D8['ID']
@@ -564,16 +569,20 @@ D8.head()
 # ------------
 # Q41
 # ------------
-D8_column_list = D8.columns
-sorted_D8_columns = sorted(D8_column_list)
-D8 = D8[sorted_D8_columns]
-D8.head()
+# Sort the D8 data by column names
+D8_column_list = D8.columns # get all column list
+sorted_D8_columns = sorted(D8_column_list)# sort it
+D8 = D8[sorted_D8_columns] # reset the dataframe by specified column list
+D8.head() # Let us see how it looks like
 
 # ------------
 # Q42
 # ------------
-# wide format
-D8 = D8[['NEW.ID', 'VISIT', 'SBP']]
+#To wide format
+# Note that our dataframe is in longitudinal format
+# Let us convert it to wide format
+D8 = D8[['NEW.ID', 'VISIT', 'SBP']] # Create subset data by selecting variables needed
+# Goal is to get ID as rows and Visit as column
 D8['VISIT'].loc[D8['VISIT'] == 0] = 1
 W1 = D8.pivot(index="NEW.ID", columns='VISIT').sort_index(axis=1, level=1).sort_index().copy(deep=True)
 W1
@@ -581,7 +590,7 @@ W1
 # ------------
 # Q43
 # ------------
-#Long format
+#From wide format --- Back to Long format
 L1 = W1.copy().stack(level=1).reset_index(level=1)
 sorted_L1_columns = sorted(L1.columns)
 L1 = L1[sorted_L1_columns]
@@ -590,9 +599,12 @@ L1
 # ------------
 # Q44
 # ------------
+#Entering 10% missing values
+
 columns = ['AGE', 'SBP', 'DBP', 'HT', 'WT', 'BMI']
 column_list_length = len(columns)
-D2 = D1[columns].copy().dropna()
+D2 = D1[columns].copy().dropna() # delete all rows that has missing values
+
 num_observations = len(D2)
 sample_size = round(num_observations * .10)
 
@@ -614,38 +626,50 @@ print(D2[D2['AGE'].isnull()].head())
 def calculate_null_proportion(variable) :
     return pd.isnull(variable).sum() / len(variable)
 
-
+# Take a look at percent of null values
 print("Null Proportions:")
 D2.apply(calculate_null_proportion)
+
 # ------------
 # Q45
 # ------------
+# Again subsetting
 columns = ["ID", "AGE", "SBP", "DBP"]
 N1 = D1[columns].copy()
+
 # ------------
 # Q46
 # ------------
+# Again subsetting
 columns = ["ID", "TC", "TG", "HT", "WT"]
 N2 = D1[columns].copy()
 N2
+
 # ------------
 # Q47
 # ------------
+# Merge N1 and N2 data side by side in such a way that the merged data should have only one ID variable
 N_merged = N1.merge(N2, left_on='ID', right_on='ID')
 N_merged.head()
+
 # ------------
 # Q48
 # ------------
+# subsetting data by taking a random sample of 1000 rows from the first 10000 rows
 M1 = D1.iloc[:10000].sample(1000, replace=False, random_state=2)
 M1
+
 # ------------
 # Q49
 # ------------
+# Subset data by taking a random sample of 1000 rows from the remaining
 M2 = D1.loc[~D1.index.isin(M1.index)].sample(1000, replace=False, random_state=3)
 # The "~" symbol states to get everything where the following statement is NOT true (negation)
 M2
+
 # ------------
 # Q50
 # ------------
+# Merge M1 with M2 in such a way that rows from M2 lies beneath the rows from M1
 M_merged = M1.append(M2)
 M_merged
