@@ -480,7 +480,7 @@ k = splitframe(d5, name="AGE1")
 # ------------------
 # Q35 and Q36
 # ------------------
-# pseudocode
+# pseudocode -  Single looping
 # Analyze the columns you need and subset the data
 # Drop missing variables and create new data frame. Missing values may interfere with the calculations
 # Again subset the age group required to new dataFrame
@@ -505,7 +505,7 @@ ds = [rows for _, rows in d11.groupby('NewAge')]
 from pprint import pprint
 pprint(ds)
 ds[1] # good thing is you could get each dataframe by calling the appropriate number of list
-d11.groupby("NewAge").mean() #by Mr,sami- Question is why the f**k do I need this line -  don't run it!
+d11.groupby("NewAge").mean() #by Mr.sami- Question is why the f**k do I need this line -  don't run it!
 
 len(ds)
 for i in range(len(ds)):
@@ -528,14 +528,20 @@ datalist[1]
 # Q37, Q38, Q39
 # ------------
 import statistics as ss
+# Select 10 rows & 10 columns from D4,
+
 # Without double loop
+# we have already selected 10 columns individually. Now select 10 rows
 D4 = d9[0 :10]
+# Remember 0 is for columns. Here we are selecting mean of means. We are finding the grand mean of datum all together
 G = ss.mean(D4.mean(axis=0))
-D4 - G
-np.power((D4 - G), 2)
+D4 - G #substarct the grand mean from each datum
+np.power((D4 - G), 2) # now we square it
 
 # double loop, How to write the double loop
+# for this, we convert it into matrix format - we can iterate through the loop
 d41 = D4.as_matrix()
+#why range is 10 ? Because we have 10 rows and 10 columns
 for i in range(10) :
     for j in range(10) :
         d41[i, j] = (d41[i, j] - G) ** 2
