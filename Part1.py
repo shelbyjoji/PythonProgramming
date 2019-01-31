@@ -554,6 +554,7 @@ D1 = pd.read_csv("PROJECTDATA.csv")
 # look data is longitudinal
 # you cannot do regular regression - look into mixed regression
 
+# Create NEWID variable from the existing ID variable in the D1 dataframe
 del D1['Unnamed: 0']
 D8 = D1.copy(deep=True)
 D8['NEW.ID'] = D8['ID'] - 100010
