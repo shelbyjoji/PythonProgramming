@@ -9,7 +9,7 @@ import statistics as ss
 
 # Q1
 # reading csv data
-d2=pd.read_csv('C:/Users/HOMEPCUSER/Desktop/Spring 19/PythonProgramming/py1.csv')
+d2 = pd.read_csv('C:/Users/HOMEPCUSER/Desktop/Spring 19/PythonProgramming/py1.csv')
 print(d2)
 
 # diamention of data

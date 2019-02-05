@@ -19,11 +19,11 @@ import numpy as np
 
 #Q1
 # reading csv data
-d1=pd.read_csv('C:/Users/HOMEPCUSER/Desktop/Spring 19/PythonProgramming/PROJECTDATA.csv')
+d1 = pd.read_csv('C:/Users/HOMEPCUSER/Desktop/Spring 19/PythonProgramming/PROJECTDATA.csv')
 print(d1)
 
 # reading text data
-text= pd.read_table('C:/Users/HOMEPCUSER/Desktop/Spring 19/PythonProgramming/ProjectData.txt')
+text = pd.read_table('C:/Users/HOMEPCUSER/Desktop/Spring 19/PythonProgramming/ProjectData.txt')
 print(text)
 
 #Q2
@@ -72,7 +72,7 @@ d1["MISSING"] = d1.isnull().sum(axis=1)
 #Q8 & #Q9 & #Q10
 #Here we drop rows that has missing value.
 #Create a new data d2 by deleting any observation (any row) that has missing value
-d2=d1.dropna()
+d2 = d1.dropna()
 d2.shape # reporting number of rows in new data
 d2.describe() # reporting new summary statistic
 
@@ -92,6 +92,7 @@ relevant_columns = [variable for variable in d2.columns if variable not in irrel
 relevant_columns
 #Now you get standard deviation of numerical variable only
 d2[relevant_columns].std()
+d2[relevant_columns].mean()
 
 
 #Q12
@@ -167,28 +168,28 @@ k[["TC"]]
 
 
 # Q18
-#In this section, we draw bar chart and pie chart
-import matplotlib.pyplot as plt #import plotting library
+# In this section, we draw bar chart and pie chart
+import matplotlib.pyplot as plt # import plotting library
 
-cols=['r','g'] #assign colors
-labels=['NonSmoker','Smoker'] #assign labels
+cols = ['r','g'] #assign colors
+labels = ['NonSmoker','Smoker'] #assign labels
 
 
 # table command for frequency table
 pd.crosstab(index=d2["SMOKE"], columns="count")
-sizes=[74,1868] # get this from above freqency table
+sizes = [74,1868] # get this from above freqency table
 explode = [0,0.1] # this will make the piece of pie protrude out; None will keep it within the circle
-#for pie chart
-plt.pie(sizes,explode=explode, labels=labels,colors=cols)
-#for axis and titles
+# for pie chart
+plt.pie(sizes,explode = explode, labels = labels, colors=cols)
+# for axis and titles
 plt.title("Pie Chart of Race Variable")
 plt.axis('equal')
 
 # bar chart
-x=['NonSmoker','Smoker'] # name categories
-y=sizes
-x
-y
+x = ['NonSmoker','Smoker'] # name categories
+y = sizes
+
+
 plt.bar(x,y)
 plt.title("Bar Chart of Smoke Variable")
 plt.xlabel("Smoking Status")
@@ -204,18 +205,18 @@ pd.crosstab(index=d2["RACE"], columns=d2["INCOME"])
 pd.crosstab(index=d2["INCOME"], columns=d2["RACE"])
 
 
-#stacked bar chart
-#One above other
+# stacked bar chart
+# One above other
 import matplotlib.pyplot as plt
 
-#Frequncy table for RACE stratified by INCOME
+# Frequncy table for RACE stratified by INCOME
 pd.crosstab(index=d2["RACE"], columns=d2["INCOME"])
-#From the above frequency table you get A (for RACE 1) and B(for RACE 2)
+# From the above frequency table you get A (for RACE 1) and B(for RACE 2)
 A = [14,18,13,80,149,166,167,249,113]
 B = [87,71,57,188,164,143,86,155,22]
 X = range(9) # get the range of income
 X
-plt.bar(X, A, color = 'b',label="Race1" )
+plt.bar(X, A, color = 'b',label="Race1")
 plt.bar(X, B, color = 'r', bottom = A, label="Race2")
 
 plt.title("Stack Bar Chart Income and Race")
@@ -258,11 +259,11 @@ plt.title('Dotplot.DBP')
 
 # subsetting data
 #Here you table DBP by race. Basically you are extracting it into two dataset x1 and x2
-x1=d2[(d2.RACE == 1)]["DBP"]
-x2=d2[(d2.RACE == 2)]["DBP"]
+x1 = d2[(d2.RACE == 1)]["DBP"]
+x2 = d2[(d2.RACE == 2)]["DBP"]
 x1 # look how x1 is
 
-#plotting two seperate graphs
+# plotting two seperate graphs
 plt.plot(x1,'bo')
 plt.title('Dotplot CC')
 plt.grid(True)
@@ -286,8 +287,8 @@ plt.ylabel("Frequency")
 
 # Draw two separate histograms for SBP when RACE=1 and RAce=2
 # two histogram together in one graph
-y1=d2[(d2.RACE == 1)]["SBP"]
-y2=d2[(d2.RACE == 2)]["SBP"]
+y1 = d2[(d2.RACE == 1)]["SBP"]
+y2 = d2[(d2.RACE == 2)]["SBP"]
 plt.hist(y1)
 plt.title('SBP for african american')
 plt.xlabel("Values of SBP")
@@ -375,13 +376,14 @@ import matplotlib.pyplot as plot
 
 # method 1, by selecting random rows
 #create a random of 200 observations
-random_subset = d2.sample(n=50,replace=False)
+random_subset = d2.sample(n = 50, replace = False)
+random_subset
 
 # stem-leaf plot
 # ------------
 # Q26
 # ------------
-k=round(random_subset.SBP)
+k = round(random_subset.SBP)
 k
 y = pd.Series(k)
 plot.stem(y)
@@ -407,6 +409,7 @@ print(d3.columns)
 #Check the dimension of the new data d3. Report the number of missing values for each variable
 np.shape(d3) #check for diamention
 d3.isnull().sum() # reporting missing values
+
 # putting it into a column. It will report number of missing values in each row
 #remember axis = 1 for row and 0 for columns
 d3["MISSING"] = d3.isnull().sum(axis=1)
@@ -429,7 +432,7 @@ d4.head()
 # Q31
 #------------
 #Subset the data again by keeping age from 9 to 20
-d5= d4.loc[(d4["AGE1"] >= 9) & (d4['AGE1']<=20)].copy()
+d5 = d4.loc[(d4["AGE1"] >= 9) & (d4['AGE1']<=20)].copy()
 
 #------------
 # Q32
@@ -505,7 +508,7 @@ ds = [rows for _, rows in d11.groupby('NewAge')]
 from pprint import pprint
 pprint(ds)
 ds[1] # good thing is you could get each dataframe by calling the appropriate number of list
-d11.groupby("NewAge").mean() #by Mr.sami- Question is why the f**k do I need this line -  don't run it!
+d11.groupby("NewAge").mean()
 
 len(ds)
 for i in range(len(ds)):
