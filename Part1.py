@@ -156,7 +156,7 @@ pd.crosstab(index=d2["BPC"],columns=d2["RACE"])
 bysmoke = d2.groupby('SMOKE')
 bysmoke.mean()
 bysmoke.std()#to get variance
-K=bysmoke.var()#to get variance
+K = bysmoke.var()#to get variance
 K[["TC"]]
 
 # Q16
@@ -494,14 +494,14 @@ k = splitframe(d5, name="AGE1")
 # Bind the list together by concatenate function.
 
 import statistics as ss
-datalist=[] # note that this is a list and not a dataframe
+datalist = [] # note that this is a list and not a dataframe
 
 
 #subset the data by getting columns you need from original data d1
-d8=d1[['RACE','INCOME','AGE','SMOKE','SBP','DBP','HT', 'WT','WM','BMI']]
-d9=d8.dropna() # remove missing value rows
-d11=d9[(d9.AGE > 9) & (d9.AGE <= 19)] # subset the data by age from 10 to 19
-d11['NewAge']=round(d11.AGE,0)#now you round it
+d8 = d1[['RACE','INCOME','AGE','SMOKE','SBP','DBP','HT', 'WT','WM','BMI']]
+d9 = d8.dropna() # remove missing value rows
+d11 = d9[(d9.AGE > 9) & (d9.AGE <= 19)] # subset the data by age from 10 to 19
+d11['NewAge'] = round(d11.AGE,0)#now you round it
 ds = [rows for _, rows in d11.groupby('NewAge')]
 
 #I just wanted to see my list nicely to analyze the list. You could just use ds, and it will do it.
@@ -512,7 +512,8 @@ d11.groupby("NewAge").mean()
 
 len(ds)
 for i in range(len(ds)):
-       datalist.append(pd.DataFrame({'age':[ss.mean(ds[i].NewAge)],
+       datalist.append(pd.DataFrame({
+      'age':[ss.mean(ds[i].NewAge)],
       'Mean.SBP': [ss.mean(ds[i].SBP)],
       'Mean.DBP': [ss.mean(ds[i].DBP)],
       'Mean.HT': [ss.mean(ds[i].HT)],
@@ -676,3 +677,5 @@ M2
 # Merge M1 with M2 in such a way that rows from M2 lies beneath the rows from M1
 M_merged = M1.append(M2)
 M_merged
+
+len(initial_bp_variables)
