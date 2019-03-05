@@ -63,8 +63,12 @@ scipy.stats.ttest_ind(d9[d9.RACE == 1].HT, d9[d9.RACE == 2].HT)
 
 a = pd.crosstab(d9[d9.RACE == 1].SMOKE, columns="counts")
 b = pd.crosstab(d9[d9.RACE == 2].SMOKE, columns="counts")
+print(a)
+print(b)
+
+# add value like a[1], a[0], b[1], b[0]
 aa = np.array([[918, 51], [950, 23]])
-print(stats.chi2_contingency(aa))  # chisquared value and p value
+print(stats.chi2_contingency(aa))  # chi-squared value and p value
 
 # Test method. Use the chi-square goodness of fit test to determine whether observed sample frequencies
 # differ significantly from expected frequencies specified in the null hypothesis.
@@ -83,7 +87,7 @@ stats.t.interval(0.95, len(d9.AGE)-1, loc=np.mean(d9.AGE), scale=stats.sem(d9.AG
 stats.t.interval(0.95, len(d9.SBP)-1, loc=np.mean(d9.SBP), scale=stats.sem(d9.SBP))
 stats.t.interval(0.95, len(d9.TC)-1, loc=np.mean(d9.TC), scale=stats.sem(d9.TC))
 
-# alternative appraoch
+# alternative approach
 sbp_confidence_interval = sms.DescrStatsW(d1['SBP'].dropna()).tconfint_mean()
 bmi_confidence_interval = sms.DescrStatsW(d1['BMI'].dropna()).tconfint_mean()
 print(sbp_confidence_interval)
@@ -311,6 +315,7 @@ a1=pd.crosstab(d9.CSBP, columns="counts")
 print(a1)
 b1=pd.crosstab(d9.CWT, columns="counts")
 print(b1)
+# get value from a1 and b1
 bb=np.array([[17,1650,275],[480,705,757]])
 scipy.stats.chi2_contingency(bb)
 
