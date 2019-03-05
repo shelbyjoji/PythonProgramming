@@ -202,10 +202,7 @@ def simdata(n):
 simulate = simdata(1000)
 print(simulate)
 
-def foo(n):
-    X = simdata(n)
-    res = pd.concat([param_estimation(Xi) for Xi in X],axis=1)
-    return res
+
 
 def param_estimation(Xi):
     m = 1/(Xi.geom.mean() + 1)
@@ -214,10 +211,15 @@ def param_estimation(Xi):
     m3 = Xi.poisson.mean()
     m4 = Xi.expon.mean()
     m5 = Xi.normal.mean()
-    distribution_list = ['geom','binom','poisson','expon','normal']
-    sim_mean = pd.Series([m1,m2,m3,m4,m5],index=distribution_list)
+    distribution_list = ['geom', 'binom','poisson', 'expon', 'normal']
+    sim_mean = pd.Series([m1, m2, m3, m4, m5], index=distribution_list)
     sim_mean.name = Xi.Uniform.values[0] #get the uniform
     return sim_mean
+
+def foo(n):
+    X = simdata(n)
+    res = pd.concat([param_estimation(Xi) for Xi in X],axis=1)
+    return res
 
 replications = 100
 [foo(2500) for rep in range(replications)]
@@ -250,6 +252,7 @@ def simdata(n) :
                        'poisson' : y13, 'expon' : y14, 'normal' : y15, 'age' : j * reps})
     ds = [rows for _, rows in m1.groupby('age')]
     return (ds)
+
 def param_estimation(Xi) :
     m = 1 / (Xi.geom.mean() + 1)
     m1 = 1 if m > 1 else m
@@ -261,6 +264,7 @@ def param_estimation(Xi) :
     sim_mean = pd.Series([m1, m2, m3, m4, m5], index=distribution_list)
     sim_mean.name = Xi.age.values[0]  # get the age
     return sim_mean
+
 def foo(n) :
     X = simdata(n)
     res = pd.concat([param_estimation(Xi) for Xi in X], axis=1)
