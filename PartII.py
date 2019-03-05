@@ -181,14 +181,14 @@ np.var(s2)
 # 5. normal (μ=10, σ=2).
 
 def simdata(n):
-    j = [i for i in range(1,n+1)]
+    j = [i for i in range(1, n+1)]
     y00 = np.random.uniform(1, 100, size=n).round()
     y11 = np.random.geometric(p=.3, size=n)
     y12 = np.random.binomial(n=10, p=.5, size=n)
     y13 = np.random.poisson(lam=4, size=n).round(4)
     y14 = np.random.exponential(scale=7, size=n).round(2)
     y15 = np.random.normal(10, 2, size=n).round(2)
-    m1 = pd.DataFrame({'sample_size':j,
+    m1 = pd.DataFrame({'sample_size': j,
                        'geom': y11,
                        'binom': y12,
                        'poisson': y13,
@@ -197,7 +197,7 @@ def simdata(n):
                        'Uniform': y00})
 
     ds = [rows for _, rows in m1.groupby('Uniform')]
-    return(ds)
+    return ds
 
 simulate = simdata(1000)
 print(simulate)
@@ -211,13 +211,14 @@ def param_estimation(Xi):
     m = 1/(Xi.geom.mean() + 1)
     m1 = 1 if m > 1 else m
     m2 = Xi.binom.values.mean()/10
-    m3  = Xi.poisson.mean()
+    m3 = Xi.poisson.mean()
     m4 = Xi.expon.mean()
     m5 = Xi.normal.mean()
     distribution_list = ['geom','binom','poisson','expon','normal']
     sim_mean = pd.Series([m1,m2,m3,m4,m5],index=distribution_list)
-    sim_mean.name = Xi.Uniform.values[0] #get the age
+    sim_mean.name = Xi.Uniform.values[0] #get the uniform
     return sim_mean
+
 replications = 100
 [foo(2500) for rep in range(replications)]
 
@@ -239,11 +240,11 @@ def simdata(n) :
     j = np.arange(1, 26).tolist()
     reps = int(n / 25)  # python doesn't automatically repeat numpy arrays and lists, so you have to manually
     # make it do so:         4* [1,2,3,4] for a LIST makes    [1,2,3,4,1,2,3,4,1,2,3,4]
-    y11 = np.random.geometric(p = unif(0.2, 0.8, size = 25).tolist() * reps, size=n)
-    y12 = np.random.binomial(n = 10, p = unif(0.4, 0.7, size = 25).tolist() * reps, size=n)
-    y13 = np.random.poisson(lam = ( binom (p = 0.65, n=10, size = 25)).tolist() * reps, size=n)
-    y14 = np.random.exponential(scale = unif(1 / .7, 1 / .3, size = 25).tolist() * reps, size=n).round(2)
-    y15 = np.random.normal(unif(10, 20, size=25).tolist() * reps, 2, size = n).round(2)
+    y11 = np.random.geometric(p=unif(0.2, 0.8, size=25).tolist() * reps, size=n)
+    y12 = np.random.binomial(n=10, p=unif(0.4, 0.7, size=25).tolist() * reps, size=n)
+    y13 = np.random.poisson(lam=(binom(p=0.65, n=10, size=25)).tolist() * reps, size=n)
+    y14 = np.random.exponential(scale=unif(1 / .7, 1 / .3, size=25).tolist() * reps, size=n).round(2)
+    y15 = np.random.normal(unif(10, 20, size=25).tolist() * reps, 2, size=n).round(2)
 
     m1 = pd.DataFrame({'sample_size' : n, 'geom' : y11, 'binom' : y12,
                        'poisson' : y13, 'expon' : y14, 'normal' : y15, 'age' : j * reps})
