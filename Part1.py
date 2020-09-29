@@ -679,3 +679,9 @@ M_merged = M1.append(M2)
 M_merged
 
 len(initial_bp_variables)
+
+
+# Playing with string manipulations -  Note that df is a new dataframe with var as variable
+df.var = df.var.str.strip("/")
+df.var = df.var.str.replace("-", " ")
+df.var = df.var.str.lower()
