@@ -685,3 +685,6 @@ len(initial_bp_variables)
 df.var = df.var.str.strip("/")
 df.var = df.var.str.replace("-", " ")
 df.var = df.var.str.lower()
+
+# rename column name
+df.rename({"var": "var_new_name"}, axis=1, inplace=True)
